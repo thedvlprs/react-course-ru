@@ -8,6 +8,8 @@
     <!-- Не используйте это в production -->
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
     <style>
       .blue {
         color: #0f74e7;
@@ -86,6 +88,13 @@
         }
       }
 
+      Article.propTypes = {
+        data: PropTypes.shape({
+          author: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired,
+        }),
+      };
+
       class News extends React.Component {
         renderNews = () => {
           const { data } = this.props; // аналогично записи const data = this.props.data
@@ -119,6 +128,12 @@
           );
         }
       }
+
+      // добавили propTypes
+      // propTypes (с маленькой буквы) = свойство News
+      News.propTypes = {
+        data: PropTypes.array.isRequired, // PropTypes (с большой буквы) = библиотека prop-ty
+      };
 
       const App = () => {
         return (

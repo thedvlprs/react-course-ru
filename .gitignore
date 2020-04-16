@@ -1,6 +1,7 @@
 ### react ###
 .DS_*
 *.log
+.vscode/
 logs
 **/*.backup.*
 **/*.back.*
