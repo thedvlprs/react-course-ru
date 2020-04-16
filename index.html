@@ -12,6 +12,10 @@
       .blue {
         color: #0f74e7;
       }
+
+      .none {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -20,7 +24,7 @@
     <script type="text/babel">
       const myNews = [
         {
-          id: 1,
+          id: 1, // добавили id
           author: 'Саша Печкин',
           text: 'В четверг, четвертого числа...',
         },
@@ -44,16 +48,32 @@
 
       class News extends React.Component {
         render() {
-          const newsTemplate = this.props.data.map(function (item) {
-            return (
-              <div key={item.id}>
-                <p className='news__author'>{item.author}:</p>
-                <p className='news__text'>{item.text}</p>
-              </div>
-            );
-          });
+          const { data } = this.props; // аналогично записи const data = this.props.data
+          let newsTemplate;
 
-          return <div className='news'>{newsTemplate}</div>;
+          if (data.length) {
+            // если новости есть, пробегись map'ом
+            newsTemplate = data.map(function (item) {
+              return (
+                <div key={item.id}>
+                  <p className='news__author'>{item.author}</p>
+                  <p className='news__text'>{item.text}</p>
+                </div>
+              );
+            });
+          } else {
+            // если новостей нет - сохрани в переменную параграф
+            newsTemplate = <p>К сожалению, новостей нет.</p>;
+          }
+
+          return (
+            <div className='news'>
+              {newsTemplate}
+              {data.length ? (
+                <strong>Всего новостей: {data.length}</strong>
+              ) : null}
+            </div>
+          );
         }
       }
 
