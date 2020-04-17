@@ -183,10 +183,18 @@
         data: PropTypes.array.isRequired, // PropTypes (с большой буквы) = библиотека prop-ty
       };
 
+      // --- добавили test input ---
+      class TestInput extends React.Component {
+        render() {
+          return <input className='test-input' value='введите значение' />;
+        }
+      }
+
       const App = () => {
         return (
           <React.Fragment>
             <h3>Новости</h3>
+            <TestInput /> {/* добавили вывод компонента */}
             <News data={myNews} />
           </React.Fragment>
         );
