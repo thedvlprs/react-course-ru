@@ -54,7 +54,7 @@
     <script type="text/babel">
       const myNews = [
         {
-          id: 1, // добавили id
+          id: 1,
           author: 'Саша Печкин',
           text: 'В четверг, четвертого числа...',
           bigText:
@@ -84,20 +84,30 @@
 
       class Article extends React.Component {
         state = {
-          visible: false, // определили начальное состояние
+          visible: false,
+        };
+
+        handleReadMoreClick = (e) => {
+          // добавили метод
+          e.preventDefault();
+          this.setState({ visible: true });
         };
 
         render() {
           const { author, text, bigText } = this.props.data;
-          const { visible } = this.state; // вытащили visible из this.state
+          const { visible } = this.state;
           return (
             <div className='article'>
               <p className='news__author'>{author}:</p>
               <p className='news__text'>{text}</p>
               {
-                /* если не visible, то показывай */
+                /* добавили onClick */
                 !visible && (
-                  <a href='#' className='news__readmore'>
+                  <a
+                    onClick={this.handleReadMoreClick}
+                    href='#'
+                    className='news__readmore'
+                  >
                     Подробнее
                   </a>
                 )
