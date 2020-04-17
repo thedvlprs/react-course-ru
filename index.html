@@ -46,6 +46,10 @@
         margin: 10px 0 0 0;
         display: block;
       }
+
+      .test-input {
+        margin: 0 5px 5px 0;
+      }
     </style>
   </head>
   <body>
@@ -192,14 +196,20 @@
         onChangeHandler = (e) => {
           this.setState({ myValue: e.currentTarget.value });
         };
+        onBtnClickHandler = (e) => {
+          alert(this.state.myValue);
+        };
         render() {
           return (
-            <input
-              className='test-input'
-              onChange={this.onChangeHandler}
-              value={this.state.myValue}
-              placeholder='введите значение'
-            />
+            <React.Fragment>
+              <input
+                className='test-input'
+                onChange={this.onChangeHandler}
+                value={this.state.myValue}
+                placeholder='введите значение'
+              />
+              <button onClick={this.onBtnClickHandler}>Показать alert</button>
+            </React.Fragment>
           );
         }
       }
