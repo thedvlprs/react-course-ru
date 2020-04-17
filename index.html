@@ -193,6 +193,10 @@
           super(props);
           this.input = React.createRef();
         }
+        componentDidMount() {
+          // ставим фокус в input
+          this.input.current.focus();
+        }
         onBtnClickHandler = () => {
           // эта запись сейчас не работает
           alert(this.input.current.value);
