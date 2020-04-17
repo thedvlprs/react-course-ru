@@ -189,24 +189,22 @@
 
       // --- добавили test input ---
       class TestInput extends React.Component {
-        state = {
-          myValue: '',
-        };
-        // исп-ся e.currentTarget.value
-        onChangeHandler = (e) => {
-          this.setState({ myValue: e.currentTarget.value });
-        };
-        onBtnClickHandler = (e) => {
-          alert(this.state.myValue);
+        constructor(props) {
+          super(props);
+          this.input = React.createRef();
+        }
+        onBtnClickHandler = () => {
+          // эта запись сейчас не работает
+          alert(this.input.current.value);
         };
         render() {
           return (
             <React.Fragment>
               <input
                 className='test-input'
-                onChange={this.onChangeHandler}
-                value={this.state.myValue}
+                defaultValue=''
                 placeholder='введите значение'
+                ref={this.input}
               />
               <button onClick={this.onBtnClickHandler}>Показать alert</button>
             </React.Fragment>
