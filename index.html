@@ -185,8 +185,22 @@
 
       // --- добавили test input ---
       class TestInput extends React.Component {
+        state = {
+          myValue: '',
+        };
+        // исп-ся e.currentTarget.value
+        onChangeHandler = (e) => {
+          this.setState({ myValue: e.currentTarget.value });
+        };
         render() {
-          return <input className='test-input' value='введите значение' />;
+          return (
+            <input
+              className='test-input'
+              onChange={this.onChangeHandler}
+              value={this.state.myValue}
+              placeholder='введите значение'
+            />
+          );
         }
       }
 
