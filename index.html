@@ -50,6 +50,37 @@
       .test-input {
         margin: 0 5px 5px 0;
       }
+
+      .add {
+        margin: 0 5px 5px 0;
+        width: 210px;
+        border: 1px dashed rgba(0, 89, 181, 0.82);
+        padding: 5px;
+      }
+      .add__author,
+      .add__text,
+      .add__btn,
+      .add__checkrule {
+        display: block;
+        margin: 0 0 5px 0;
+        padding: 5px;
+        width: 94%;
+        border: 1px solid rgba(0, 89, 181, 0.82);
+      }
+      .add__checkrule {
+        border: none;
+        font-size: 12px;
+      }
+      .add__btn {
+        box-sizing: content-box;
+        color: #fff;
+        text-transform: uppercase;
+        background: #007ddc;
+      }
+      .add__btn:disabled {
+        background: #ccc;
+        color: #999;
+      }
     </style>
   </head>
   <body>
@@ -187,31 +218,68 @@
         data: PropTypes.array.isRequired, // PropTypes (с большой буквы) = библиотека prop-ty
       };
 
-      // --- добавили test input ---
-      class TestInput extends React.Component {
-        constructor(props) {
-          super(props);
-          this.input = React.createRef();
-        }
-        componentDidMount() {
-          // ставим фокус в input
-          this.input.current.focus();
-        }
-        onBtnClickHandler = () => {
-          // эта запись сейчас не работает
-          alert(this.input.current.value);
+      // --- добавили форму ---
+      class Add extends React.Component {
+        state = {
+          // добавили начальное состояние
+          name: '',
+          text: '',
+          agree: false, // новое значение состояния - agree (булево)
+        };
+        onBtnClickHandler = (e) => {
+          e.preventDefault();
+          const { name, text } = this.state;
+          alert(name + '\n' + text); // \n = перенос строки
+        };
+        handleChange = (e) => {
+          const { id, value } = e.currentTarget;
+          this.setState({ [id]: e.currentTarget.value });
+        };
+        handleCheckboxChange = (e) => {
+          // обработчик кликов по чекбоксу, чтобы установить true/false считываем свойство checked
+          this.setState({ agree: e.currentTarget.checked });
+        };
+        validate = () => {
+          const { name, text, agree } = this.state;
+          if (name.trim() && text.trim() && agree) {
+            return true;
+          }
+          return false;
         };
         render() {
+          const { name, text, agree } = this.state; // вытащили значения из стейта
+
+          // добавили value для name и для textarea
           return (
-            <React.Fragment>
+            <form className='add'>
               <input
-                className='test-input'
-                defaultValue=''
-                placeholder='введите значение'
-                ref={this.input}
+                id='name'
+                type='text'
+                onChange={this.handleChange}
+                className='add__author'
+                placeholder='Ваше имя'
+                value={name}
               />
-              <button onClick={this.onBtnClickHandler}>Показать alert</button>
-            </React.Fragment>
+              <textarea
+                id='text'
+                onChange={this.handleChange}
+                className='add__text'
+                placeholder='Текст новости'
+                value={text}
+              ></textarea>
+              <label className='add__checkrule'>
+                <input type='checkbox' onChange={this.handleCheckboxChange} /> Я
+                согласен с правилами
+              </label>
+              {/* кнопке добавили disabled равный (НЕ agree) */}
+              <button
+                className='add__btn'
+                onClick={this.onBtnClickHandler}
+                disabled={!this.validate()}
+              >
+                Показать alert
+              </button>
+            </form>
           );
         }
       }
@@ -219,8 +287,8 @@
       const App = () => {
         return (
           <React.Fragment>
+            <Add />
             <h3>Новости</h3>
-            <TestInput /> {/* добавили вывод компонента */}
             <News data={myNews} />
           </React.Fragment>
         );
