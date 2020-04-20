@@ -30,7 +30,7 @@ class App extends React.Component {
         // запрос завершился успешно, делаем isLoading: false
       // в news кладем пришедшие данные
       this.setState({ isLoading: false, news: data })
-      }, 3000) // добавили задержку в 3 секунды
+      }, 3000) // добавили задержку в 3 секундыы
     })
   }
 

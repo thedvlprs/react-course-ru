@@ -3,14 +3,30 @@ import PropTypes from 'prop-types'
 import { Article } from './Article'; // идти в components не нужно, так как мы уже в этой директории
 
 class News extends React.Component {
+  state = {
+    filteredNews: this.props.data,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let nextFilteredNews = [...nextProps.data]
+
+    nextFilteredNews.forEach((item, index) => {
+      if (item.bigText.toLowerCase().indexOf('pubg') !== -1) {
+        item.bigText = 'СПАМ'
+      }
+    })
+
+    this.setState({ filteredNews: nextFilteredNews})
+  }
+  
   // удалили старое состояние counter: 0 (старый ненужный код)
   renderNews = () => {
-    const { data } = this.props;
+    const { filteredNews } = this.state; // используем состояние
     let newsTemplate = null;
 
-    if (data.length) {
-      // если новости есть, пробегись map'ом
-      newsTemplate = data.map(function (item) {
+    if (filteredNews.length) {
+      // везде data заменена на filteredNews
+      newsTemplate = filteredNews.map(function (item) {
         return <Article key={item.id} data={item} />;
       });
     } else {
@@ -22,22 +38,22 @@ class News extends React.Component {
   };
 
   render() {
-    const { data } = this.props;
+             const { filteredNews } = this.state; // аналогично, используем состояние
 
-    return (
-      <div className='news'>
-        {this.renderNews()}
-        {
-          /* добавили onClick */
-          data.length ? (
-            <strong className={'news__count'}>
-              Всего новостей: {data.length}
-            </strong>
-          ) : null
-        }
-      </div>
-    );
-  }
+             return (
+               <div className='news'>
+                 {this.renderNews()}
+                 {
+                   /* добавили onClick */
+                   filteredNews.length ? (
+                     <strong className={'news__count'}>
+                       Всего новостей: {filteredNews.length}
+                     </strong>
+                   ) : null
+                 }
+               </div>
+             );
+           }
 }
 
 // добавили propTypes
