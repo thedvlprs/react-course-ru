@@ -156,6 +156,7 @@
 
       Article.propTypes = {
         data: PropTypes.shape({
+          id: PropTypes.number.isRequired, // добавили id, это число, обязательно
           author: PropTypes.string.isRequired,
           text: PropTypes.string.isRequired,
           bigText: PropTypes.string.isRequired,
@@ -163,16 +164,9 @@
       };
 
       class News extends React.Component {
-        state = {
-          counter: 0, // добавили свойство counter (счетчик)
-        };
-
-        handleCounter = () => {
-          // добавили новый метод
-          this.setState({ counter: ++this.state.counter }); // в кот-ом увеличиваем счетчик
-        };
+        // удалили старое состояние counter: 0 (старый ненужный код)
         renderNews = () => {
-          const { data } = this.props; // аналогично записи const data = this.props.data
+          const { data } = this.props;
           let newsTemplate = null;
 
           if (data.length) {
@@ -190,7 +184,6 @@
 
         render() {
           const { data } = this.props;
-          const { counter } = this.state; // вытащили counter
 
           return (
             <div className='news'>
@@ -198,15 +191,11 @@
               {
                 /* добавили onClick */
                 data.length ? (
-                  <strong
-                    onClick={this.handleCounter}
-                    className={'news__count'}
-                  >
+                  <strong className={'news__count'}>
                     Всего новостей: {data.length}
                   </strong>
                 ) : null
               }
-              <p>Всего кликов: {counter}</p>
             </div>
           );
         }
@@ -224,14 +213,20 @@
           // добавили начальное состояние
           name: '',
           text: '',
+          bigText: '', // добавлен bigText
           agree: false, // новое значение состояния - agree (булево)
         };
         onBtnClickHandler = (e) => {
           e.preventDefault();
-          const { name, text } = this.state;
+          const { name, text, bigText } = this.state; // вытащили так же и bigText
           // alert(name + '\n' + text);
           // вызовем вместо alert
-          this.props.onAddNews({ name, text });
+          this.props.onAddNews({
+            id: +new Date(), // в id сохраняется количество миллисекунд прошедших с 1 января 1970 года в часовом поясе UTC
+            author: name, // name сохраняем в поле author
+            text,
+            bigText,
+          });
         };
         handleChange = (e) => {
           const { id, value } = e.currentTarget;
@@ -249,7 +244,7 @@
           return false;
         };
         render() {
-          const { name, text, agree } = this.state; // вытащили значения из стейта
+          const { name, text, bigText, agree } = this.state; // вытащили значения из стейта
 
           // добавили value для name и для textarea
           return (
@@ -268,6 +263,14 @@
                 className='add__text'
                 placeholder='Текст новости'
                 value={text}
+              ></textarea>
+              {/* добавили bigText */}
+              <textarea
+                id='bigText'
+                onChange={this.handleChange}
+                className='add__text'
+                placeholder='Текст новости подробно'
+                value={bigText}
               ></textarea>
               <label className='add__checkrule'>
                 <input type='checkbox' onChange={this.handleCheckboxChange} /> Я
